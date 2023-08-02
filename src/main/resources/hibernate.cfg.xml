@@ -9,5 +9,7 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.hightlight_sql">true</property>
+        
+        <mapping class="web.member.pojo.Member"></mapping>
     </session-factory>
 </hibernate-configuration>
