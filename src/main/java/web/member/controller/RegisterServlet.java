@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import web.member.pojo.Member;
+import web.member.entity.Member;
 
 @WebServlet("/member/register")
 public class RegisterServlet extends HttpServlet {

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import core.pojo.Core;
-import web.member.pojo.Member;
+import web.member.entity.Member;
 
 @WebServlet("/member/remove")
 public class RemoveServlet extends HttpServlet {

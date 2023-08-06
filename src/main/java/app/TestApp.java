@@ -2,18 +2,16 @@ package app;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-
 import core.util.HibernateUtil;
-import web.member.pojo.Member;
+import web.emp.entity.Dept;
+import web.emp.entity.Emp;
+import web.member.entity.Member;
 
 public class TestApp {
 	
@@ -21,29 +19,15 @@ public class TestApp {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session =sessionFactory.openSession();
 		
-		//select USE
-		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
-		Root<Member> root = criteriaQuery.from(Member.class);
-		
-		criteriaQuery.where(criteriaBuilder.and(
-				criteriaBuilder.equal(root.get("username"),"admin"),
-				criteriaBuilder.equal(root.get("password"),"P@sswOrd"))
-				);
-		
-		//select USERNAME, NICKNAME
-		criteriaQuery.multiselect(root.get("username"), root.get("nickname"));
-		//order by ID
-		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
-		
-//		Member member = session.createQuery(criteriaQuery).uniqueResult();
-//		System.out.println(member.getNickname());
-		
-		
-		TestApp app = new TestApp();
-		for (Member member : app.selectAll()) {
-			System.out.println(member.getId());
+		Emp emp =session.get(Emp.class, 7369);
+		Dept dept =emp.getDept();
+		System.out.println(dept.getDeptno());
+		List<Emp> emps = dept.getEmps();
+		for (Emp tmp :emps) {
+			System.out.println(tmp.getEname());
 		}
+			
+		
 	}
 //		Class clazz = Member.class;
 //		用Mmeber找到Member類別的物件 取他的型態，再指定給clazz
@@ -64,24 +48,24 @@ public class TestApp {
 //		System.out.println(app.updateById(member));
 //		System.out.println(app.selectById(2).getNickname());
 //	
-//	public Integer insert(Member member) {
-//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-//		Session session = sessionFactory.openSession();
-//		try {
-//			Transaction transaction =session.beginTransaction();
-//			session.persist(member);
-//			transaction.commit();
-//			return member.getId();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			session.getTransaction().rollback();
-//			return null;
-//		}
+	public Integer insert(Member member) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		try {
+			Transaction transaction =session.beginTransaction();
+			session.persist(member);
+			transaction.commit();
+			return member.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			return null;
+		}
 //		
 //		
 //		
 //		
-//	}
+	}
 
 	public int deleteById(Integer id) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();

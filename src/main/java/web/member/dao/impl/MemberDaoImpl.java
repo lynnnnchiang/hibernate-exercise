@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import web.member.dao.MemberDao;
-import web.member.pojo.Member;
+import web.member.entity.Member;
 
 public class MemberDaoImpl implements MemberDao {
 
@@ -43,8 +43,8 @@ public class MemberDaoImpl implements MemberDao {
 			.append("lastUpdatedDate = NOW() ")
 			.append("WHERE username = :username ");
 		
-		Query<?> query = getSession().createQuery(hql.toString(), Member.class);
-		if (password != null && password.isEmpty()) {
+		Query<?> query = getSession().createQuery(hql.toString());
+		if (password != null && !password.isEmpty()) {
 			query.setParameter("password", password);
 		}
 		

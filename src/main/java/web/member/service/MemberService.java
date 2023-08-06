@@ -3,7 +3,7 @@ package web.member.service;
 import java.util.List;
 
 import core.service.CoreService;
-import web.member.pojo.Member;
+import web.member.entity.Member;
 
 public interface MemberService extends CoreService {
 

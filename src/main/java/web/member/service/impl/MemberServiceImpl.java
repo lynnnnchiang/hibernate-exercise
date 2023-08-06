@@ -4,7 +4,7 @@ import java.util.List;
 
 import web.member.dao.MemberDao;
 import web.member.dao.impl.MemberDaoImpl;
-import web.member.pojo.Member;
+import web.member.entity.Member;
 import web.member.service.MemberService;
 
 public class MemberServiceImpl implements MemberService {
@@ -34,35 +34,23 @@ public class MemberServiceImpl implements MemberService {
 			return member;
 		}
 
-		try {
-			beginTransaction();
-			if (dao.selectByUsername(member.getUsername()) != null) {
-				member.setMessage("帳號重複");
-				member.setSuccessful(false);
-				rollback();
-				return member;
-			}
-
-			member.setRoleId(2);
-			final int resultCount = dao.insert(member);
-			if (resultCount < 1) {
-				member.setMessage("註冊錯誤，請聯絡管理員!");
-				member.setSuccessful(false);
-				rollback();
-				return member;
-			}
-
-			member.setMessage("註冊成功");
-			member.setSuccessful(true);
-			commit();
-			return member;
-		} catch (Exception e) {
-			e.printStackTrace();
-			member.setMessage("註冊錯誤，請聯絡管理員!");
+		if (dao.selectByUsername(member.getUsername()) != null) {
+			member.setMessage("帳號重複");
 			member.setSuccessful(false);
-			rollback();
 			return member;
 		}
+
+		member.setRoleId(2);
+		final int resultCount = dao.insert(member);
+		if (resultCount < 1) {
+			member.setMessage("註冊錯誤，請聯絡管理員!");
+			member.setSuccessful(false);
+			return member;
+		}
+
+		member.setMessage("註冊成功");
+		member.setSuccessful(true);
+		return member;
 	}
 
 	@Override
@@ -114,16 +102,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean remove(Integer id) {
-		try {
-			beginTransaction();
-			final int resultCount = dao.deleteById(id);
-			commit();
-			return resultCount > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			rollback();
-			return false;
-		}
+			return dao.deleteById(id)> 0;
 	}
 
 	@Override
